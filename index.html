@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>React Autocomplete</title>
+
+    <style>
+        body {
+            font: 16px/1.4em sans-serif;
+            background-color: #FFC500;
+            overflow: hidden;
+        }
+
+        ::-webkit-input-placeholder {
+            text-align: center;
+        }
+        .container {
+            text-align: center;
+        }
+
+        .og-autocomplete {
+            display: inline-block;
+            padding: 0.5em;
+        }
+
+        .og-autocomplete .og-input {
+            color: #555;
+            font-size: 1.25em;
+            padding: 0.75em 0;
+            border: 5px solid #f3f3f3;
+            border-radius: 3px;
+            width: 300px;
+            text-align: center;
+            font-weight: bold;
+            outline: none;
+        }
+
+        .og-autocomplete .og-list {}
+
+        .og-autocomplete .og-list .og-list-item {
+            /*color: #EAAB32;*/
+            color: #000;
+            font-weight: bold;
+            border: 1px solid #CCC;
+            padding: 0.75em;
+            margin: 0 0.5em;
+            background-color: #fff;
+            transition: background-color 0.5s;
+            color: #555;
+        }
+
+        .og-autocomplete .og-list .og-list-item .mark {
+            background-color: #FFC500;
+            padding: 0.15em;
+        }
+
+        .og-autocomplete .og-list .og-list-item:hover {
+            background-color: #FFF2C4;
+            cursor: pointer;
+
+        }
+
+        .og-autocomplete .og-list .og-list-item:nth-child(n) {
+            transform: skewX(6deg);
+        }
+
+        .og-autocomplete .og-list .og-list-item:nth-child(2n+ 1) {
+            transform: skewX(-6deg);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container" id="root">
+    </div>
+
+    <script src="build/bundle.js"></script>
+</body>
+
+</html>
