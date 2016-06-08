@@ -34,7 +34,7 @@
 /******/ 	__webpack_require__.c = installedModules;
 
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "C:\\Users\\leandro.goncalves\\Documents\\Pessoal\\github\\react-todo\\build";
+/******/ 	__webpack_require__.p = "C:\\Users\\leandro.goncalves\\Documents\\Pessoal\\github\\react-autocomplete\\build";
 
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
@@ -20362,8 +20362,9 @@
 	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Autocomplete).call(this));
 
 	        _this.state = {
-	            allElements: ['Abacaxi', 'Banana', 'Caqui', 'Damasco', 'Figo', 'Goiaba', 'Jaca', 'Kiwi', 'Laranja', 'Melancia', 'Nectarina', 'Pessego', 'Romã', 'Tangerina', 'Uva', 'Abacate', 'Açaí', 'Acerola', 'Amora', 'Cacau', 'Caju', 'Graviola', 'Groselha', 'Guaraná', 'Limão', 'Manga', 'Morango', 'Tomate'],
-	            elements: []
+	            elementos: ['Abacaxi', 'Banana', 'Caqui', 'Damasco', 'Figo', 'Goiaba', 'Jaca', 'Kiwi', 'Laranja', 'Melancia', 'Nectarina', 'Pessego', 'Romã', 'Tangerina', 'Uva', 'Abacate', 'Açaí', 'Acerola', 'Amora', 'Cacau', 'Caju', 'Graviola', 'Groselha', 'Guaraná', 'Limão', 'Manga', 'Morango', 'Tomate'],
+	            elementosSelecionados: [],
+	            filtro: ''
 	        };
 
 	        // :/
@@ -20376,41 +20377,37 @@
 	        value: function onChange(e) {
 	            var _this2 = this;
 
-	            var allElements = this.state.allElements;
+	            var elementos = this.state.elementos;
 
 
 	            var filtro = e.target.value.toUpperCase();
 
 	            if (filtro == '') {
 	                this.setState({
-	                    allElements: allElements,
-	                    elements: []
+	                    elementos: elementos,
+	                    elementosSelecionados: [],
+	                    filtro: ''
 	                });
 	            } else {
 	                (function () {
 	                    var LIMIT = 100;
 
-	                    var elements = allElements.filter(function (nomeDaFruta, i) {
+	                    var elementosSelecionados = elementos.filter(function (nomeDaFruta, i) {
 	                        return nomeDaFruta.toUpperCase().indexOf(filtro) > -1 && i < LIMIT;
-	                    }).map(function (nomeDaFruta) {
-	                        var index = nomeDaFruta.toUpperCase().indexOf(filtro);
-
-	                        var toReplace = nomeDaFruta.substr(index, filtro.length);
-
-	                        return nomeDaFruta.replace(toReplace, '<span class="mark">' + toReplace + '</span>');
 	                    });
+	                    // .map(function (nomeDaFruta) {
+	                    //     const index = nomeDaFruta.toUpperCase().indexOf(filtro);
+	                    //
+	                    //     const toReplace = nomeDaFruta.substr(index, filtro.length);
+	                    //
+	                    //     return nomeDaFruta.replace(toReplace, `<span class="mark">${toReplace}</span>`);
+	                    // });
 
-	                    if (elements.length > 0) {
-	                        _this2.setState({
-	                            allElements: allElements,
-	                            elements: elements
-	                        });
-	                    } else {
-	                        _this2.setState({
-	                            allElements: allElements,
-	                            elements: []
-	                        });
-	                    }
+	                    _this2.setState({
+	                        elementos: elementos,
+	                        elementosSelecionados: elementosSelecionados,
+	                        filtro: filtro
+	                    });
 	                })();
 	            }
 	        }
@@ -20425,7 +20422,7 @@
 	                    null,
 	                    _react2.default.createElement('input', { placeholder: this.props['placeholder-text'], type: 'text', className: 'og-input', onChange: this.onChange })
 	                ),
-	                _react2.default.createElement(List, { items: this.state.elements })
+	                _react2.default.createElement(List, { items: this.state.elementosSelecionados, filtro: this.state.filtro })
 	            );
 	        }
 	    }]);
@@ -20445,19 +20442,29 @@
 	    _createClass(List, [{
 	        key: 'render',
 	        value: function render() {
-	            var nodes = this.props.items.map(function (elemento) {
-	                return _react2.default.createElement(
-	                    ListItem,
-	                    { key: elemento, text: elemento },
-	                    elemento
-	                );
+	            var _this4 = this;
+
+	            var itens = this.props.items.map(function (elemento) {
+	                return _react2.default.createElement(ListItem, { key: elemento, text: elemento, filtro: _this4.props.filtro });
 	            });
 
-	            return _react2.default.createElement(
-	                'div',
-	                { className: 'og-list' },
-	                nodes
-	            );
+	            if (itens.length == 0 && this.props.filtro != '') {
+	                return _react2.default.createElement(
+	                    'div',
+	                    { className: 'og-list' },
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'og-list-item og-list-item-not-found' },
+	                        'Urgh! :('
+	                    )
+	                );
+	            } else {
+	                return _react2.default.createElement(
+	                    'div',
+	                    { className: 'og-list' },
+	                    itens
+	                );
+	            }
 	        }
 	    }]);
 
@@ -20476,8 +20483,13 @@
 	    _createClass(ListItem, [{
 	        key: 'render',
 	        value: function render() {
+	            var nomeDaFruta = this.props.text;
+	            var index = nomeDaFruta.toUpperCase().indexOf(this.props.filtro);
+	            var toReplace = nomeDaFruta.substr(index, this.props.filtro.length);
+	            var nomeDaFrutaMarkup = nomeDaFruta.replace(toReplace, '<span class="mark">' + toReplace + '</span>');
+
 	            var markup = {
-	                __html: this.props.text
+	                __html: '<div class="og-list-item-content">' + nomeDaFrutaMarkup + '</div>'
 	            };
 
 	            return _react2.default.createElement('div', { className: 'og-list-item', dangerouslySetInnerHTML: markup });

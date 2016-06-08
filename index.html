@@ -17,8 +17,23 @@
         ::-webkit-input-placeholder {
             text-align: center;
         }
+
         .container {
             text-align: center;
+        }
+
+        .info {
+            float: left;
+            color: #666;
+        }
+
+        .info a {
+            text-decoration: none;
+            color: #333;
+        }
+
+        .info a:hover {
+            color: #999;
         }
 
         .og-autocomplete {
@@ -46,34 +61,54 @@
             font-weight: bold;
             border: 1px solid #CCC;
             padding: 0.75em;
-            margin: 0 0.5em;
+            margin: 0 0.75em;
             background-color: #fff;
             transition: background-color 0.5s;
             color: #555;
+            cursor: pointer;
+        }
+
+        .og-autocomplete .og-list .og-list-item:hover {
+            background-color: #FFF2C4;
+        }
+
+        .og-autocomplete .og-list .og-list-item.og-list-item-not-found {
+            cursor: default;
+            transition: none;
+            background-color: #fff;
+            color: #c00;
+        }
+
+        .og-autocomplete .og-list .og-list-item:nth-child(n) {
+            transform: skewX(12deg);
+        }
+
+        .og-autocomplete .og-list .og-list-item:nth-child(n) .og-list-item-content {
+            transform: skewX(-12deg);
+        }
+
+        .og-autocomplete .og-list .og-list-item:nth-child(2n + 1) {
+            transform: skewX(-12deg);
+        }
+
+        .og-autocomplete .og-list .og-list-item:nth-child(2n + 1) .og-list-item-content {
+            transform: skewX(12deg);
         }
 
         .og-autocomplete .og-list .og-list-item .mark {
             background-color: #FFC500;
             padding: 0.15em;
         }
-
-        .og-autocomplete .og-list .og-list-item:hover {
-            background-color: #FFF2C4;
-            cursor: pointer;
-
-        }
-
-        .og-autocomplete .og-list .og-list-item:nth-child(n) {
-            transform: skewX(6deg);
-        }
-
-        .og-autocomplete .og-list .og-list-item:nth-child(2n+ 1) {
-            transform: skewX(-6deg);
-        }
     </style>
 </head>
 
 <body>
+    <div class="info">
+        <h1>React - Autocomplete</h1>
+
+        <p>Autocomplete feito com <a href="https://facebook.github.io/react/">React</a>, <a href="https://babeljs.io/">Babel ES6</a> e <a href="https://webpack.github.io/">Webpack</a>.</p>
+    </div>
+
     <div class="container" id="root">
     </div>
 

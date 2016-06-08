@@ -5,7 +5,7 @@ export class Autocomplete extends React.Component {
         super();
 
         this.state = {
-            allElements: ['Abacaxi', 'Banana', 'Caqui',
+            elementos: ['Abacaxi', 'Banana', 'Caqui',
                 'Damasco', 'Figo', 'Goiaba',
                 'Jaca', 'Kiwi', 'Laranja',
                 'Melancia', 'Nectarina', 'Pessego',
@@ -16,7 +16,8 @@ export class Autocomplete extends React.Component {
                 'Limão', 'Manga', 'Morango',
                 'Tomate'
             ],
-            elements: []
+            elementosSelecionados: [],
+            filtro: ''
         }
 
         // :/
@@ -24,43 +25,37 @@ export class Autocomplete extends React.Component {
     }
 
     onChange (e) {
-        const { allElements } = this.state;
+        const { elementos } = this.state;
 
         var filtro = e.target.value.toUpperCase();
 
         if (filtro == '') {
             this.setState({
-                allElements,
-                elements: []
+                elementos,
+                elementosSelecionados: [],
+                filtro: ''
             });
         }
         else {
             const LIMIT = 100;
 
-            const elements = allElements
+            const elementosSelecionados = elementos
                 .filter(function (nomeDaFruta, i) {
                     return nomeDaFruta.toUpperCase().indexOf(filtro) > -1 && i < LIMIT;
-                })
-                .map(function (nomeDaFruta) {
-                    const index = nomeDaFruta.toUpperCase().indexOf(filtro);
-
-                    const toReplace = nomeDaFruta.substr(index, filtro.length);
-
-                    return nomeDaFruta.replace(toReplace, `<span class="mark">${toReplace}</span>`);
                 });
+                // .map(function (nomeDaFruta) {
+                //     const index = nomeDaFruta.toUpperCase().indexOf(filtro);
+                //
+                //     const toReplace = nomeDaFruta.substr(index, filtro.length);
+                //
+                //     return nomeDaFruta.replace(toReplace, `<span class="mark">${toReplace}</span>`);
+                // });
 
-            if (elements.length > 0) {
                 this.setState({
-                    allElements,
-                    elements
+                    elementos,
+                    elementosSelecionados: elementosSelecionados,
+                    filtro: filtro
                 });
-            }
-            else {
-                this.setState({
-                    allElements,
-                    elements: []
-                });
-            }
         }
     }
 
@@ -70,28 +65,44 @@ export class Autocomplete extends React.Component {
                 <div>
                     <input placeholder={this.props['placeholder-text']} type="text" className="og-input" onChange={this.onChange} />
                 </div>
-                <List items={this.state.elements}></List>
+                <List items={this.state.elementosSelecionados} filtro={this.state.filtro}></List>
             </div>
-        )
+        );
     }
 }
 
 class List extends React.Component {
     render () {
-        let nodes = this.props.items.map(function (elemento) {
-            return <ListItem key={elemento} text={elemento}>{elemento}</ListItem>;
-        });
+        let itens = this.props.items.map((elemento) => <ListItem key={elemento} text={elemento} filtro={this.props.filtro}></ListItem>);
 
-        return <div className="og-list">{nodes}</div>;
+        if (itens.length == 0 && this.props.filtro != '') {
+            return (
+                <div className="og-list">
+                    <div className="og-list-item og-list-item-not-found">Urgh! :(</div>
+                </div>
+            );
+        }
+        else {
+            return (
+                <div className="og-list">{itens}</div>
+            );
+        }
     }
 }
 
 class ListItem extends React.Component {
     render () {
+        const nomeDaFruta = this.props.text;
+        const index = nomeDaFruta.toUpperCase().indexOf(this.props.filtro);
+        const toReplace = nomeDaFruta.substr(index, this.props.filtro.length);
+        const nomeDaFrutaMarkup = nomeDaFruta.replace(toReplace, `<span class="mark">${toReplace}</span>`);
+
         const markup = {
-            __html: this.props.text
+            __html: `<div class="og-list-item-content">${nomeDaFrutaMarkup}</div>`
         };
 
-        return <div className="og-list-item" dangerouslySetInnerHTML={markup}></div>;
+        return (
+            <div className="og-list-item" dangerouslySetInnerHTML={markup}></div>
+        );
     }
 }
