@@ -20375,8 +20375,6 @@
 	    _createClass(Autocomplete, [{
 	        key: 'onChange',
 	        value: function onChange(e) {
-	            var _this2 = this;
-
 	            var elementos = this.state.elementos;
 
 
@@ -20389,26 +20387,15 @@
 	                    filtro: ''
 	                });
 	            } else {
-	                (function () {
-	                    var LIMIT = 100;
+	                var elementosSelecionados = elementos.filter(function (nomeDaFruta, i) {
+	                    return nomeDaFruta.toUpperCase().indexOf(filtro) > -1;
+	                });
 
-	                    var elementosSelecionados = elementos.filter(function (nomeDaFruta, i) {
-	                        return nomeDaFruta.toUpperCase().indexOf(filtro) > -1 && i < LIMIT;
-	                    });
-	                    // .map(function (nomeDaFruta) {
-	                    //     const index = nomeDaFruta.toUpperCase().indexOf(filtro);
-	                    //
-	                    //     const toReplace = nomeDaFruta.substr(index, filtro.length);
-	                    //
-	                    //     return nomeDaFruta.replace(toReplace, `<span class="mark">${toReplace}</span>`);
-	                    // });
-
-	                    _this2.setState({
-	                        elementos: elementos,
-	                        elementosSelecionados: elementosSelecionados,
-	                        filtro: filtro
-	                    });
-	                })();
+	                this.setState({
+	                    elementos: elementos,
+	                    elementosSelecionados: elementosSelecionados,
+	                    filtro: filtro
+	                });
 	            }
 	        }
 	    }, {
@@ -20442,10 +20429,10 @@
 	    _createClass(List, [{
 	        key: 'render',
 	        value: function render() {
-	            var _this4 = this;
+	            var _this3 = this;
 
 	            var itens = this.props.items.map(function (elemento) {
-	                return _react2.default.createElement(ListItem, { key: elemento, text: elemento, filtro: _this4.props.filtro });
+	                return _react2.default.createElement(ListItem, { key: elemento, text: elemento, filtro: _this3.props.filtro });
 	            });
 
 	            if (itens.length == 0 && this.props.filtro != '') {

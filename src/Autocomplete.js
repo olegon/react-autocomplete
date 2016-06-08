@@ -37,25 +37,13 @@ export class Autocomplete extends React.Component {
             });
         }
         else {
-            const LIMIT = 100;
+            const elementosSelecionados = elementos.filter((nomeDaFruta, i) => nomeDaFruta.toUpperCase().indexOf(filtro) > -1);
 
-            const elementosSelecionados = elementos
-                .filter(function (nomeDaFruta, i) {
-                    return nomeDaFruta.toUpperCase().indexOf(filtro) > -1 && i < LIMIT;
-                });
-                // .map(function (nomeDaFruta) {
-                //     const index = nomeDaFruta.toUpperCase().indexOf(filtro);
-                //
-                //     const toReplace = nomeDaFruta.substr(index, filtro.length);
-                //
-                //     return nomeDaFruta.replace(toReplace, `<span class="mark">${toReplace}</span>`);
-                // });
-
-                this.setState({
-                    elementos,
-                    elementosSelecionados: elementosSelecionados,
-                    filtro: filtro
-                });
+            this.setState({
+                elementos,
+                elementosSelecionados: elementosSelecionados,
+                filtro: filtro
+            });
         }
     }
 
